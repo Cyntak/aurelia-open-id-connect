@@ -12,6 +12,6 @@ export default class OpenIdConnectRouting {
     private addLoginRedirectRoute(routerConfiguration);
     private addLogoutRedirectRoute(routerConfiguration);
     private isSilentLogin();
-    private getPath(uri);
+    private getPath(routerConfiguration, uri);
     private convertUriToAnchor(uri);
 }

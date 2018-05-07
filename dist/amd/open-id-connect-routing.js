@@ -34,7 +34,7 @@ define(["require", "exports", "aurelia-framework", "./open-id-connect-authorize-
                         return _this.openIdConnectNavigationStrategies.signInRedirectCallback(instruction);
                     }
                 },
-                route: this.getPath(this.openIdConnectConfiguration.redirectUri),
+                route: this.getPath(routerConfiguration, this.openIdConnectConfiguration.redirectUri),
             });
         };
         OpenIdConnectRouting.prototype.addLogoutRedirectRoute = function (routerConfiguration) {
@@ -44,7 +44,7 @@ define(["require", "exports", "aurelia-framework", "./open-id-connect-authorize-
                 navigationStrategy: function (instruction) {
                     return _this.openIdConnectNavigationStrategies.signOutRedirectCallback(instruction);
                 },
-                route: this.getPath(this.openIdConnectConfiguration.postLogoutRedirectUri),
+                route: this.getPath(routerConfiguration, this.openIdConnectConfiguration.postLogoutRedirectUri),
             });
         };
         OpenIdConnectRouting.prototype.isSilentLogin = function () {
@@ -55,8 +55,12 @@ define(["require", "exports", "aurelia-framework", "./open-id-connect-authorize-
                 return true;
             }
         };
-        OpenIdConnectRouting.prototype.getPath = function (uri) {
-            return this.convertUriToAnchor(uri).pathname;
+        OpenIdConnectRouting.prototype.getPath = function (routerConfiguration, uri) {
+            var path = this.convertUriToAnchor(uri).pathname;
+            if (routerConfiguration.options && routerConfiguration.options.root && routerConfiguration.options.pushState) {
+                path = path.replace(routerConfiguration.options.root, '');
+            }
+            return path;
         };
         OpenIdConnectRouting.prototype.convertUriToAnchor = function (uri) {
             var anchor = document.createElement('a');
