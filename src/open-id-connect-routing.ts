@@ -56,8 +56,9 @@ export default class OpenIdConnectRouting {
     }
   }
 
-  private getPath(uri: string): string {
-    return this.convertUriToAnchor(uri).pathname;
+  private getPath(routerConfiguration: RouterConfiguration, uri: string): string {
+    const path = this.convertUriToAnchor(uri).pathname;
+    return path.replace(routerConfiguration.config.root, '');
   }
 
   private convertUriToAnchor(uri: string): HTMLAnchorElement {
