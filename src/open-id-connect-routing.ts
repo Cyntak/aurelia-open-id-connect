@@ -57,9 +57,16 @@ export default class OpenIdConnectRouting {
   }
 
   private getPath(routerConfiguration: RouterConfiguration, uri: string): string {
-    let path = this.convertUriToAnchor(uri).pathname;
+    let path: string = this.convertUriToAnchor(uri).pathname;
     if (routerConfiguration.options && routerConfiguration.options.root && routerConfiguration.options.pushState) {
-      path = path.replace(routerConfiguration.options.root, '');
+      let root: string = routerConfiguration.options.root;
+      if (root.charAt(0) === '/') {
+        root = root.substr(1);
+      }
+      if (root.length > 0) {
+        if (path.charAt(0) === '/') { path = path.substr(1); }
+        path = path.replace(root, '');
+      }
     }
     return path;
   }

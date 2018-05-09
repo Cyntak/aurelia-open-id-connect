@@ -58,7 +58,16 @@ define(["require", "exports", "aurelia-framework", "./open-id-connect-authorize-
         OpenIdConnectRouting.prototype.getPath = function (routerConfiguration, uri) {
             var path = this.convertUriToAnchor(uri).pathname;
             if (routerConfiguration.options && routerConfiguration.options.root && routerConfiguration.options.pushState) {
-                path = path.replace(routerConfiguration.options.root, '');
+                var root = routerConfiguration.options.root;
+                if (root.charAt(0) === '/') {
+                    root = root.substr(1);
+                }
+                if (root.length > 0) {
+                    if (path.charAt(0) === '/') {
+                        path = path.substr(1);
+                    }
+                    path = path.replace(root, '');
+                }
             }
             return path;
         };
